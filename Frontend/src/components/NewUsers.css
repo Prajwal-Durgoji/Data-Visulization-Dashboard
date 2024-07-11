@@ -1,0 +1,88 @@
+/* .newUserTableRow{
+    color: white;
+}
+
+.newUserTableRow th{
+    text-align: center;
+} */
+.newUser{
+    margin-left: 100px;
+    margin-bottom: 100px;
+    overflow: auto;
+    height: 650px;
+    width: -webkit-calc(100% - 130px);
+    width: -moz-calc(100% - 130px);
+    width: calc(100% - 130px);
+    font-family: 'Roboto',
+    sans-serif;
+}
+
+
+.NewUserDet{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-left: 100px;
+    margin-bottom: 100px;
+}
+.NewUserDetails{
+    margin-bottom: 10px;
+}
+
+.NewUserDetails h5{
+    color: white;
+    display: inline;
+    
+}
+
+.NewUserDetails button{
+    background-color: white;
+    color: black;
+    font-weight: bold;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.newUserTableRow {
+    background-color: #f3f3f3;
+    color: #000000;
+    font-size: 10px;
+}
+
+
+.newUserTableHeader {
+    text-align: center;
+    background-color: #000000;
+    color: #ffffff;
+}
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #98acf8;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #98acf8;
+}

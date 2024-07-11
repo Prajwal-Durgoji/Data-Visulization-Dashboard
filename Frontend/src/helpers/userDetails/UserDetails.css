@@ -1,0 +1,31 @@
+.UserDet {
+    margin: 5px;
+    padding-left: 5px;
+}
+
+
+.UserDetHeading {
+    text-align: center;
+    color: rgb(204, 200, 200);
+}
+
+.UserDet h5 {
+    display: inline-block;
+    color: rgb(150, 135, 135);
+}
+
+
+.UserDetailTable {
+    display: flex;
+    flex-direction: column;
+    background-color: black;
+}
+
+input{
+    background-color: gray;
+    border-radius: 5px;
+    position: relative;
+    /* left: 1055px; */
+    /* bottom: 25px; */
+}
+

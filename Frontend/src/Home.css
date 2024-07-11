@@ -1,0 +1,36 @@
+.App-header {
+
+    position: relative;
+    /* background-color: blue; */
+    background: linear-gradient(to right, #1655e0, #ff8500)
+}
+
+
+.HomeContent {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-right: 80px;
+    position: absolute;
+    top: 45%;
+    -ms-transform: translateY(-60%);
+    transform: translateY(-60%);
+}
+
+.HomeContent p {
+    margin: 10px;
+    text-shadow: 2px 8px 6px rgba(0, 0, 0, 0.2),
+        0px -5px 35px rgba(255, 255, 255, 0.3);
+}
+
+.HomeContent a {
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+
+    .HomeContent {
+        margin: auto;
+        text-align: center;
+    }
+}

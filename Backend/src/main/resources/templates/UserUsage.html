@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="ISO-8859-1">
+
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+
+	<title>Insert title here</title>
+	<style>
+		html,
+		body {
+			background: #6a11cb;
+			background: -webkit-linear-gradient(to right, #1655e0, #ff8500);
+			background: linear-gradient(to right, #1655e0, #ff8500);
+			height: 100%;
+			overflow-y: hidden;
+		}
+
+		.date {
+			position: relative;
+			left: 400px;
+			border-radius: 5px;
+		}
+
+		.table-content {
+			display: flex;
+			width: 420px;
+			position: relative;
+			bottom: 488px;
+			right: -102px;
+		}
+
+		table {
+			width: 420px;
+			border-collapse: collapse;
+			overflow: hidden;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+		}
+
+		th,
+		td {
+			padding: 9px;
+			background-color: rgb(0, 0, 0);
+			color: rgb(255, 255, 255);
+			text-align: center;
+		}
+
+		th {
+			text-align: center;
+		}
+
+		thead {
+			th {
+				background-color: rgb(0, 128, 255);
+			}
+		}
+
+		h1 {
+			color: rgb(255, 255, 255);
+			text-align: center;
+			padding: 20px;
+			font-family: 'Arial', sans-serif;
+			font-size: 2.5em;
+			text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+
+		}
+
+
+
+		#pagination {
+			display: flex;
+			width: 280px;
+			position: relative;
+			bottom: 485px;
+			text-align: center;
+			left: 205px;
+		}
+
+
+		#pagination button {
+			background-color: rgb(0, 132, 251);
+			border: none;
+			color: white;
+			padding: 2px 8px;
+			text-align: center;
+			text-decoration: none;
+			display: inline-block;
+			font-size: 16px;
+			margin: 4px 2px;
+			cursor: pointer;
+			transition-duration: 0.4s;
+		}
+
+		#pagination button:hover {
+			background-color: rgb(128, 128, 192);
+		}
+
+		#pagination span {
+			margin: 0 10px;
+			line-height: 38px;
+		}
+
+
+		#calendarButtonToday {
+			display: flex;
+			position: relative;
+			left: 1249px;
+			top: 1px;
+		}
+
+		#calendarButtonToday {
+			font-size: 14px;
+			padding: 8px;
+			border-radius: 11px;
+			border: 1px solid #ccc;
+			background: linear-gradient(to right, #007BFF, #00C6FF);
+			color: white;
+			transition: all 0.3s ease;
+			box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+			position: relative;
+			overflow: hidden;
+		}
+
+		#calendarButtonToday:hover {
+			border-color: #888;
+			transform: scale(1.05);
+			background: linear-gradient(to right, #00C6FF, #007BFF);
+		}
+
+		#calendarButtonToday:focus {
+			border-color: #007BFF;
+			outline: none;
+		}
+
+
+		#calendarButtonMonth {
+			display: flex;
+			position: relative;
+			left: 1250px;
+			top: 20px;
+			font-size: 15px;
+			padding: 5px;
+			border-radius: 9px;
+			border: 0px solid #ccc;
+			background: linear-gradient(to right, #007BFF, #00C6FF);
+			color: white;
+			transition: all 0.3s ease;
+			box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+		}
+
+		#calendarButtonMonth:hover {
+			border-color: #888;
+			transform: scale(1.05);
+			background: linear-gradient(to right, #00C6FF, #007BFF);
+		}
+
+		#calendarButtonMonth:focus {
+			border-color: #007BFF;
+			outline: none;
+		}
+
+		#yearPicker {
+			display: flex;
+			position: relative;
+			left: 1305px;
+			top: 10px;
+			font-size: 16px;
+			padding: 5px;
+			border-radius: 9px;
+			border: 1px solid #ccc;
+			background: linear-gradient(to right, #007BFF, #00C6FF);
+			color: black;
+			transition: all 0.3s ease;
+			box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+		}
+
+		#yearPicker:hover {
+			border-color: #888;
+			transform: scale(1.05);
+			background: linear-gradient(to right, #00C6FF, #007BFF);
+		}
+
+		#yearPicker:focus {
+			border-color: #007BFF;
+			outline: none;
+		}
+
+
+		#nameSearch,
+		#emailSearch {
+			position: relative;
+			bottom: 410px;
+		}
+
+		#container1 {
+			width: 750px;
+			height: 500px;
+			position: relative;
+			left: 653px;
+
+		}
+
+		#todayButton {
+			position: relative;
+			display: inline-block;
+			font-size: 1.5em;
+			letter-spacing: .1em;
+			color: #0ef;
+			text-decoration: none;
+			text-transform: uppercase;
+			border: 2px solid #0ef;
+			padding: 10px 30px;
+			z-index: 1;
+			overflow: hidden;
+			transition: color 1s, box-shadow 1s;
+		}
+
+		#todayButton.active,
+		#todayButton:hover {
+			transition-delay: 0s, 1s;
+			color: #fff;
+			box-shadow:
+				0 0 10px #0ef,
+				0 0 20px #0ef,
+				0 0 40px #0ef,
+				0 0 80px #0ef,
+				0 0 160px #0ef;
+		}
+
+		#todayButton::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -50px;
+			width: 0;
+			height: 100%;
+			background: #0ef;
+			transform: skewX(35deg);
+			z-index: -1;
+			transition: 1s;
+		}
+
+		#todayButton:hover:before {
+			width: 100%;
+		}
+
+		#weekButton {
+			position: relative;
+			display: inline-block;
+			font-size: 1.5em;
+			letter-spacing: .1em;
+			color: rgb(255, 255, 0);
+			text-decoration: none;
+			text-transform: uppercase;
+			border: 2px solid rgb(255, 255, 0);
+			padding: 10px 30px;
+			z-index: 1;
+			overflow: hidden;
+			transition: color 1s, box-shadow 1s;
+		}
+
+		#weekButton.active,
+		#weekButton:hover {
+			transition-delay: 0s, 1s;
+			color: #fff;
+			box-shadow:
+				0 0 10px rgb(255, 255, 0),
+				0 0 20px rgb(255, 255, 0),
+				0 0 40px rgb(255, 255, 0),
+				0 0 80px rgb(255, 255, 0),
+				0 0 160px rgb(255, 255, 0);
+		}
+
+		#weekButton::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -50px;
+			width: 0;
+			height: 100%;
+			background: rgb(255, 255, 0);
+			transform: skewX(35deg);
+			z-index: -1;
+			transition: 1s;
+		}
+
+		#weekButton:hover:before {
+			width: 100%;
+		}
+
+		#monthButton {
+			position: relative;
+			display: inline-block;
+			font-size: 1.5em;
+			letter-spacing: .1em;
+			color: rgb(0, 128, 255);
+			text-decoration: none;
+			text-transform: uppercase;
+			border: 2px solid rgb(0, 128, 255);
+			padding: 10px 30px;
+			z-index: 1;
+			overflow: hidden;
+			transition: color 1s, box-shadow 1s;
+		}
+
+
+		#monthButton.active,
+		#monthButton:hover {
+			transition-delay: 0s, 1s;
+			color: #fff;
+			box-shadow:
+				0 0 10px rgb(0, 128, 255),
+				0 0 20px rgb(0, 128, 255),
+				0 0 40px rgb(0, 128, 255),
+				0 0 80px rgb(0, 128, 255),
+				0 0 160px rgb(0, 128, 255);
+		}
+
+
+		#monthButton::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -50px;
+			width: 0;
+			height: 100%;
+			background: rgb(0, 128, 255);
+			transform: skewX(35deg);
+			z-index: -1;
+			transition: 1s;
+		}
+
+		#monthButton:hover:before {
+			width: 100%;
+		}
+
+		#yearButton {
+			position: relative;
+			display: inline-block;
+			font-size: 1.5em;
+			letter-spacing: .1em;
+			color: rgb(255, 17, 255);
+			text-decoration: none;
+			text-transform: uppercase;
+			border: 2px solid rgb(255, 17, 255);
+			;
+			padding: 10px 30px;
+			z-index: 1;
+			overflow: hidden;
+			transition: color 1s, box-shadow 1s;
+		}
+
+		#yearButton.active,
+		#yearButton:hover {
+			transition-delay: 0s, 1s;
+			color: #fff;
+			box-shadow:
+				0 0 10px rgb(255, 17, 255),
+				0 0 20px rgb(255, 17, 255),
+				0 0 40px rgb(255, 17, 255),
+				0 0 80px rgb(255, 17, 255),
+				0 0 160px rgb(255, 17, 255);
+		}
+
+
+		#yearButton::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -50px;
+			width: 0;
+			height: 100%;
+			background: rgb(255, 17, 255);
+			transform: skewX(35deg);
+			z-index: -1;
+			transition: 1s;
+		}
+
+		#yearButton:hover:before {
+			width: 100%;
+		}
+	</style>
+
+<body>
+
+	<h1>User Usage</h1>
+
+	<a href="/api/auth/chartDataToday" id="todayButton" class="date">Today</a>
+	<a href="/api/auth/chartDataWeek" id="weekButton" class="date">Week</a>
+	<a href="/api/auth/chartDataMonth" id="monthButton" class="date">Month</a>
+	<a href="/api/auth/chartDataYear" id="yearButton" class="date">Year</a>
+
+	<input type="date" id="calendarButtonToday" value="">
+	<input type="month" id="calendarButtonMonth" value="">
+	<select id="yearPicker"></select>
+
+	<div id="container1"></div>
+
+	<div class="table-content">
+		<table border="2">
+			<thead>
+				<tr>
+					<th>User</th>
+					<th>Email</th>
+					<th>Pulse Count</th>
+				</tr>
+			</thead>
+			<tbody id="pulseTableBody">
+				<tr th:each="pulse : ${pulseList}">
+					<td th:text="${pulse.name}"></td>
+					<td th:text="${pulse.email}"></td>
+					<td th:text="${pulse.pulseCount}"></td>
+				</tr>
+			</tbody>
+		</table><br>
+	</div>
+
+	<div id="pagination">
+		<button id="prevPage">&#8592; Prev</button>
+		<span id="currentPage"></span> / <span id="totalPages"></span>
+		<button id="nextPage">Next &#8594;</button>
+	</div>
+
+
+
+
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/series-label.js"></script>
+	<!--<script src="https://code.highcharts.com/modules/exporting.js"></script>-->
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+	<script th:inline="javascript">
+
+		$(function () {
+			function updateChart2(user, pulse) {
+				Highcharts.chart('container1', {
+					chart: {
+						type: 'column',
+						backgroundColor: 'rgba(255, 255, 255, 0)' // This makes the chart background transparent
+					},
+					title: {
+						text: 'Pulse Data',
+						style: {
+							color: '#FFFFFF' // This makes the title text color white
+						}
+					},
+
+
+					subtitle: {
+						text: 'Details',
+						style: {
+							color: '#FFFFFF' // This makes the title text color white
+						}
+					},
+					xAxis: {
+						categories: user,
+						crosshair: true,
+						labels: {
+							style: {
+								color: '#FFFFFF' // This makes the xAxis labels text color white
+							}
+						}
+					},
+					yAxis: {
+						min: 0,
+						title: {
+							text: 'Pulse Count',
+							style: {
+								color: '#FFFFFF' // This makes the yAxis title text color white
+							}
+						},
+						labels: {
+							style: {
+								color: '#FFFFFF' // This makes the yAxis labels text color white
+							}
+						}
+
+					},
+					tooltip: {
+						//	headerFormat: '<span style="font-size:10px">{point.key}<table></span>',
+						pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+							'<td style="padding:0"><b>{point.y}</b></td></tr>',
+						footerFormat: '</table>',
+						shared: true,
+						useHTML: true,
+
+					},
+
+					credits: {
+						enabled: false
+					},
+
+					plotOptions: {
+						column: {
+							pointPadding: 0.2,
+							borderWidth: 0,
+							states: {
+								hover: {
+									color: '#0071e3' // This makes the hover color red
+								}
+							}
+						}
+					},
+					series: [{
+						name: 'Pulse Count',
+						data: pulse,
+						color: {
+							linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+							stops: [
+								[0, '#003399'], // start
+								[1, '#0071e3'] // end
+							]
+						}
+					}]
+				});
+			}
+
+			// Fetch data and update chart based on the provided URL
+			function fetchDataAndUpdateChart(url) {
+				$.get(url, function (data) {
+					updateChart2(data.user, data.pulse);
+				});
+			}
+
+			$('.date').click(function () {
+				$('.date').removeClass('active'); // Remove the 'active' class from all buttons
+				$(this).addClass('active'); // Add the 'active' class to the clicked button
+			});
+
+			// Pagination
+			var rowsPerPage = 10;
+			var currentPage = 1;
+			function updateTable(pulseList, page) {
+				var start = (page - 1) * rowsPerPage;
+				var end = start + rowsPerPage;
+				var pagePulseList = pulseList.slice(start, end);
+
+				var tbody = $('#pulseTableBody');
+				tbody.empty();
+				$.each(pagePulseList, function (i, pulse) {
+					var tr = $('<tr>');
+					tr.append('<td>' + pulse.name + '</td>');
+					tr.append('<td>' + pulse.email + '</td>');
+					tr.append('<td>' + pulse.pulseCount + '</td>');
+					tbody.append(tr);
+				});
+
+				// Update the current page and total pages
+				$('#currentPage').text(currentPage);
+				var totalPages = Math.ceil(pulseList.length / rowsPerPage);
+				$('#totalPages').text(totalPages);
+			}
+
+			$('#prevPage').click(function () {
+				if (currentPage > 1) {
+					currentPage--;
+					updateTable(pulseList, currentPage);
+				}
+			});
+
+			$('#nextPage').click(function () {
+				var totalPages = Math.ceil(pulseList.length / rowsPerPage);
+				if (currentPage < totalPages) {
+					currentPage++;
+					updateTable(pulseList, currentPage);
+				}
+			});
+
+
+
+			$('#todayButton').click(function (e) {
+				e.preventDefault();
+				$('#yearPicker').hide();
+				$('#calendarButtonToday').show();
+				$('#calendarButtonMonth').hide();
+
+				$.ajax({
+					url: '/api/auth/chartDataToday',
+					type: 'GET',
+					success: function (data) {
+						pulseList = data.pulseList; // Assign the returned data to pulseList
+						updateChart2(data.chartData.user, data.chartData.pulse);
+						updateTable(pulseList, currentPage);
+					}
+				});
+			});
+
+
+			//Calender Today Button
+			$(document).ready(function () {
+				var today = new Date();
+				var day = String(today.getDate()).padStart(2, '0');
+				var month = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+				var year = today.getFullYear();
+
+				today = year + '-' + month + '-' + day;
+				$('#calendarButtonToday').val(today);
+			});
+
+			$('#calendarButtonToday').change(function () {
+				var selectedDate = $(this).val();
+				// Fetch data for the selected date
+				$.get('/api/auth/chartData/today?date=' + selectedDate, function (data) {
+					// Update the table
+					var tableBody = $('#pulseTableBody');
+					tableBody.empty();
+					data.forEach(function (user) {
+						var row = $('<tr>');
+						row.append($('<td>').text(user.name));
+						row.append($('<td>').text(user.email));
+						row.append($('<td>').text(user.pulseCount));
+						tableBody.append(row);
+					});
+
+					// Update the chart
+					var users = data.map(function (user) {return user.email;});
+					var pulses = data.map(function (user) {return user.pulseCount;});
+					updateChart2(users, pulses);
+				}).fail(function (jqXHR, textStatus, errorThrown) {
+					console.error('Error fetching data:', textStatus, errorThrown);
+				});
+			});
+
+
+
+
+			$('#weekButton').click(function (e) {
+				e.preventDefault();
+				$('#yearPicker').hide();
+				$('#calendarButtonToday').hide();
+				$('#calendarButtonMonth').hide();
+
+				$.ajax({
+					url: '/api/auth/chartDataWeek',
+					type: 'GET',
+					success: function (data) {
+						pulseList = data.pulseList; // Assign the returned data to pulseList
+						updateChart2(data.chartData.user, data.chartData.pulse);
+						updateTable(pulseList, currentPage);
+					}
+				});
+			});
+
+			$('#monthButton').click(function (e) {
+				e.preventDefault();
+				$('#yearPicker').hide();
+				$('#calendarButtonToday').hide();
+				$('#calendarButtonMonth').show();
+
+				$.ajax({
+					url: '/api/auth/chartDataMonth',
+					type: 'GET',
+					success: function (data) {
+						pulseList = data.pulseList; // Assign the returned data to pulseList
+						updateChart2(data.chartData.user, data.chartData.pulse);
+						updateTable(pulseList, currentPage);
+					}
+				});
+			});
+
+			//Calender Month Button
+			$(document).ready(function () {
+				var today = new Date();
+				var month = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+				var year = today.getFullYear();
+
+				var currentMonth = year + '-' + month;
+				$('#calendarButtonMonth').val(currentMonth);
+			});
+			$('#calendarButtonMonth').change(function () {
+				var selectedMonth = $(this).val();
+
+				// Fetch data for the selected month
+				$.get('/api/auth/chartData/month?month=' + selectedMonth, function (data) {
+					// Update the table
+					var tableBody = $('#pulseTableBody');
+					tableBody.empty();
+					data.forEach(function (user) {
+						var row = $('<tr>');
+						row.append($('<td>').text(user.name));
+						row.append($('<td>').text(user.email));
+						row.append($('<td>').text(user.pulseCount));
+						tableBody.append(row);
+					});
+
+					// Update the chart
+					var users = data.map(function (user) {return user.email;});
+					var pulses = data.map(function (user) {return user.pulseCount;});
+					updateChart2(users, pulses);
+				}).fail(function (jqXHR, textStatus, errorThrown) {
+					console.error('Error fetching data:', textStatus, errorThrown);
+				});
+			});
+
+
+			$('#yearButton').click(function (e) {
+				e.preventDefault();
+				$('#yearPicker').show();
+				$('#calendarButtonToday').hide();
+				$('#calendarButtonMonth').hide();
+				$.ajax({
+					url: '/api/auth/chartDataYear',
+					type: 'GET',
+					success: function (data) {
+						pulseList = data.pulseList; // Assign the returned data to pulseList
+						updateChart2(data.chartData.user, data.chartData.pulse);
+						updateTable(pulseList, currentPage);
+					}
+				});
+			});
+
+			//Calender Yearly Button
+			var select = document.getElementById("yearPicker");
+			var startYear = 1900;
+			var endYear = new Date().getFullYear();
+			for (var year = endYear; year >= startYear; year--) {
+				var option = document.createElement("option");
+				option.text = year;
+				option.value = year;
+				select.appendChild(option);
+			}
+			$('#yearPicker').change(function () {
+				var selectedYear = $(this).val();
+
+				// Fetch data for the selected year
+				$.get('/api/auth/chartData/year?year=' + selectedYear, function (data) {
+					// Update the table
+					var tableBody = $('#pulseTableBody');
+					tableBody.empty();
+					data.forEach(function (user) {
+						var row = $('<tr>');
+						row.append($('<td>').text(user.name));
+						row.append($('<td>').text(user.email));
+						row.append($('<td>').text(user.pulseCount));
+						tableBody.append(row);
+					});
+
+					// Update the chart
+					var users = data.map(function (user) {return user.email;});
+					var pulses = data.map(function (user) {return user.pulseCount;});
+					updateChart2(users, pulses);
+				}).fail(function (jqXHR, textStatus, errorThrown) {
+					console.error('Error fetching data:', textStatus, errorThrown);
+				});
+			});
+
+			// Hide the month and year picker when the page loads
+			$(document).ready(function () {
+				$('#calendarButtonMonth').hide();
+				$('#yearPicker').hide();
+			});
+
+			fetchDataAndUpdateChart('/api/auth/today');
+
+
+		});
+
+	</script>
+
+
+</body>
+</head>
+
+</html>

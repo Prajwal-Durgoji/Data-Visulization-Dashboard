@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="ISO-8859-1">
+
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" rel="stylesheet" />
+	<title>Insert title here</title>
+	<style>
+		html,
+		body {
+			background: #6a11cb;
+			background: -webkit-linear-gradient(to right, #1655e0, #ff8500);
+			background: linear-gradient(to right, #1655e0, #ff8500);
+			height: 100%;
+			overflow-y: hidden;
+		}
+
+		h1 {
+			color: rgb(255, 255, 255);
+			text-align: center;
+			padding: 20px;
+			font-family: 'Arial', sans-serif;
+			font-size: 2.5em;
+			text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+
+		}
+
+
+		#calendarButtonToday {
+			display: flex;
+			position: relative;
+			left: 1200px;
+			top: 150px;
+		}
+
+		#calendarButtonMonth {
+			display: flex;
+			position: relative;
+			left: 1200px;
+			top: 150px;
+		}
+
+		#yearPicker {
+			display: flex;
+			position: relative;
+			left: 1200px;
+			top: 150px;
+			font-size: 16px;
+			padding: 10px;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			background: linear-gradient(to right, #007BFF, #00C6FF);
+			color: black;
+			transition: all 0.3s ease;
+			box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+
+		}
+
+		#yearPicker:hover {
+			border-color: #888;
+			transform: scale(1.05);
+			background: linear-gradient(to right, #00C6FF, #007BFF);
+		}
+
+		#yearPicker:focus {
+			border-color: #007BFF;
+			outline: none;
+		}
+
+		#calendarButtonToday {
+			font-size: 16px;
+			padding: 10px;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			background: linear-gradient(to right, #007BFF, #00C6FF);
+			color: white;
+			transition: all 0.3s ease;
+			box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+			position: relative;
+			overflow: hidden;
+		}
+
+		#calendarButtonToday:hover {
+			border-color: #888;
+			transform: scale(1.05);
+			background: linear-gradient(to right, #00C6FF, #007BFF);
+		}
+
+		#calendarButtonToday:focus {
+			border-color: #007BFF;
+			outline: none;
+		}
+
+		#calendarButtonMonth {
+			font-size: 16px;
+			padding: 10px;
+			border-radius: 5px;
+			border: 1px solid #ccc;
+			background: linear-gradient(to right, #007BFF, #00C6FF);
+			color: white;
+			transition: all 0.3s ease;
+			box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+		}
+
+		#calendarButtonMonth:hover {
+			border-color: #888;
+			transform: scale(1.05);
+			background: linear-gradient(to right, #00C6FF, #007BFF);
+		}
+
+		#calendarButtonMonth:focus {
+			border-color: #007BFF;
+			outline: none;
+		}
+
+		#pulseCountCircle {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-size: 50px;
+			color: white;
+		}
+
+
+
+		#weekTotalPulseCount {
+			font-size: 24px;
+			text-align: center;
+			padding: 12px;
+			margin: 26px;
+			background: linear-gradient(0deg, #000, #272727);
+			border-radius: 7px;
+			position: relative;
+			bottom: 33px;
+			width: 500px;
+			left: 403px;
+			color: white;
+		}
+
+
+		#monthTotalPulseCount,
+		#yearTotalPulseCount {
+			font-size: 24px;
+			text-align: center;
+			padding: 12px;
+			margin: 8px;
+			background: linear-gradient(0deg, #000, #272727);
+			border-radius: 7px;
+			transition: background-color 0.5s, transform 0.5s;
+			position: relative;
+			bottom: 60px;
+			width: 500px;
+			left: 420px;
+			color: white;
+		}
+
+
+
+		.date {
+			position: relative;
+			left: 425px;
+			border-radius: 5px;
+			bottom: 20px;
+
+		}
+
+		.loader {
+			position: absolute;
+			top: 55%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 200px;
+			height: 200px;
+			box-sizing: border-box;
+		}
+
+		.loader .face {
+			position: absolute;
+			border: 2px solid #121212;
+		}
+
+		.loader .face.face1 {
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: 090909;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+			border-radius: 50%;
+			border-left: 2px solid #ffff00;
+			border-top: 2px solid #ffff00;
+			animation: ani1 3s linear infinite;
+		}
+
+
+
+		.loader .face .circle {
+			position: absolute;
+			top: calc(50% - 1px);
+			left: 50%;
+			width: 50%;
+			height: 2px;
+			transform-origin: left;
+		}
+
+		.loader .face.face1 .circle {
+			transform: rotate(-45deg);
+		}
+
+
+
+		.loader .face .circle:before {
+			content: "";
+			position: absolute;
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			background-color: #fff;
+			top: -4px;
+			right: -6px;
+		}
+
+		.loader .face.face1 .circle:before {
+			background: #ffff00;
+			box-shadow: 0 0 20px #ff0, 0 0 40px #ff0, 0 0 60px #ff0, 0 0 80px #ff0,
+				0 0 100px #ff0, 0 0 0 5px rgba(255, 255, 0, .1);
+		}
+
+
+
+		@keyframes ani1 {
+			0% {
+				transform: rotate(0deg);
+			}
+
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+
+		#todayButton {
+			position: relative;
+			display: inline-block;
+			font-size: 1.5em;
+			letter-spacing: .1em;
+			color: #0ef;
+			text-decoration: none;
+			text-transform: uppercase;
+			border: 2px solid #0ef;
+			padding: 10px 20px;
+			z-index: 1;
+			overflow: hidden;
+			transition: color 1s, box-shadow 1s;
+		}
+
+		#todayButton.active,
+		#todayButton:hover {
+			transition-delay: 0s, 1s;
+			color: #fff;
+			box-shadow:
+				0 0 10px #0ef,
+				0 0 20px #0ef,
+				0 0 40px #0ef,
+				0 0 80px #0ef,
+				0 0 160px #0ef;
+		}
+
+		#todayButton::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -50px;
+			width: 0;
+			height: 100%;
+			background: #0ef;
+			transform: skewX(35deg);
+			z-index: -1;
+			transition: 1s;
+		}
+
+		#todayButton:hover:before {
+			width: 100%;
+		}
+
+		#weekButton {
+			position: relative;
+			display: inline-block;
+			font-size: 1.5em;
+			letter-spacing: .1em;
+			color: rgb(255, 255, 0);
+			text-decoration: none;
+			text-transform: uppercase;
+			border: 2px solid rgb(255, 255, 0);
+			padding: 10px 20px;
+			z-index: 1;
+			overflow: hidden;
+			transition: color 1s, box-shadow 1s;
+		}
+
+		#weekButton.active,
+		#weekButton:hover {
+			transition-delay: 0s, 1s;
+			color: #fff;
+			box-shadow:
+				0 0 10px rgb(255, 255, 0),
+				0 0 20px rgb(255, 255, 0),
+				0 0 40px rgb(255, 255, 0),
+				0 0 80px rgb(255, 255, 0),
+				0 0 160px rgb(255, 255, 0);
+		}
+
+		#weekButton::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -50px;
+			width: 0;
+			height: 100%;
+			background: rgb(255, 255, 0);
+			transform: skewX(35deg);
+			z-index: -1;
+			transition: 1s;
+		}
+
+		#weekButton:hover:before {
+			width: 100%;
+		}
+
+		#monthButton {
+			position: relative;
+			display: inline-block;
+			font-size: 1.5em;
+			letter-spacing: .1em;
+			color: rgb(0, 128, 255);
+			text-decoration: none;
+			text-transform: uppercase;
+			border: 2px solid rgb(0, 128, 255);
+			padding: 10px 20px;
+			z-index: 1;
+			overflow: hidden;
+			transition: color 1s, box-shadow 1s;
+		}
+
+
+		#monthButton.active,
+		#monthButton:hover {
+			transition-delay: 0s, 1s;
+			color: #fff;
+			box-shadow:
+				0 0 10px rgb(0, 128, 255),
+				0 0 20px rgb(0, 128, 255),
+				0 0 40px rgb(0, 128, 255),
+				0 0 80px rgb(0, 128, 255),
+				0 0 160px rgb(0, 128, 255);
+		}
+
+
+		#monthButton::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -50px;
+			width: 0;
+			height: 100%;
+			background: rgb(0, 128, 255);
+			transform: skewX(35deg);
+			z-index: -1;
+			transition: 1s;
+		}
+
+		#monthButton:hover:before {
+			width: 100%;
+		}
+
+		#yearButton {
+			position: relative;
+			display: inline-block;
+			font-size: 1.5em;
+			letter-spacing: .1em;
+			color: rgb(255, 17, 255);
+			text-decoration: none;
+			text-transform: uppercase;
+			border: 2px solid rgb(255, 17, 255);
+			padding: 10px 20px;
+			z-index: 1;
+			overflow: hidden;
+			transition: color 1s, box-shadow 1s;
+		}
+
+		#yearButton.active,
+		#yearButton:hover {
+			transition-delay: 0s, 1s;
+			color: #fff;
+			box-shadow:
+				0 0 10px rgb(255, 17, 255),
+				0 0 20px rgb(255, 17, 255),
+				0 0 40px rgb(255, 17, 255),
+				0 0 80px rgb(255, 17, 255),
+				0 0 160px rgb(255, 17, 255);
+		}
+
+
+		#yearButton::before {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -50px;
+			width: 0;
+			height: 100%;
+			background: rgb(255, 17, 255);
+			transform: skewX(35deg);
+			z-index: -1;
+			transition: 1s;
+		}
+
+		#yearButton:hover:before {
+			width: 100%;
+		}
+
+		#container1 {
+			width: 750px;
+			height: 420px;
+			margin: 0 auto;
+			position: relative;
+			bottom: 40px;
+			left: 60px;
+		}
+	</style>
+
+<body>
+	<h1>Pulse Count</h1>
+	<a href="#" id="todayButton" class="date">Today</a>
+	<a href="#" id="weekButton" class="date">Week</a>
+	<a href="#" id="monthButton" class="date">Month</a>
+	<a href="#" id="yearButton" class="date">Year</a>
+	<input type="date" id="calendarButtonToday" value="">
+	<input type="month" id="calendarButtonMonth" value="">
+	<select id="yearPicker"></select>
+	<div id="weekTotalPulseCount" style="display: none;"></div>
+	<div id="monthTotalPulseCount" style="display: none;"></div>
+	<div id="yearTotalPulseCount" style="display: none;"></div>
+
+	<div id="container1"></div>
+
+	<!--<div class="numberCircle" id="pulseCountCircle">0</div>-->
+
+	<div class="loader">
+		<div class="face face1">
+			<div class="circle"></div>
+		</div>
+		<div class="numberCircle" id="pulseCountCircle">0</div>
+	</div>
+
+	<!-- jQuery -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/series-label.js"></script>
+	<!--<script src="https://code.highcharts.com/modules/exporting.js"></script>-->
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+	<script th:inline="javascript">
+
+		$(function () {
+			function updateChart1(dates, pulseCounts) {
+				Highcharts.chart('container1', {
+					chart: {
+						backgroundColor: 'rgba(255, 255, 255, 0)'
+					},
+					title: {
+						text: 'Total Reports Generated',
+						align: 'left',
+						style: {
+							color: '#FFFFFF' // This makes the title text color white
+						}
+					},
+					yAxis: {
+						min: 0,
+						title: {
+							text: 'Total Reports',
+							style: {
+								color: '#FFFFFF' // This makes the yAxis title text color white
+							}
+						},
+						labels: {
+							style: {
+								color: '#FFFFFF' // This makes the yAxis labels text color white
+							}
+						}
+					},
+					xAxis: {
+						categories: dates,
+						title: {
+							text: 'Dates'
+						},
+						labels: {
+							style: {
+								color: '#FFFFFF' // This makes the xAxis labels text color white
+							}
+						}
+					},
+					legend: {
+						layout: 'vertical',
+						align: 'right',
+						verticalAlign: 'middle'
+					},
+
+					credits: {
+						enabled: false
+					},
+
+					series: [{
+						name: 'Reports Generated',
+						data: pulseCounts,
+						lineWidth: 5,
+						color: {
+							linearGradient: {x1: 0, x2: 0, y1: 0, y2: 1},
+							stops: [
+								[0, '#003396'], // start
+								[1, '#0071e3'] // end
+							]
+						}
+					}],
+					responsive: {
+						rules: [{
+							condition: {
+								maxWidth: 500
+							},
+							chartOptions: {
+								legend: {
+									layout: 'horizontal',
+									align: 'center',
+									verticalAlign: 'bottom'
+								}
+							}
+						}]
+					}
+				});
+			}
+
+			$('.date').click(function () {
+				$('.date').removeClass('active'); // Remove the 'active' class from all buttons
+				$(this).addClass('active'); // Add the 'active' class to the clicked button
+			});
+
+
+			//total pulse counts
+			function fetchTotalPulseCountForToday() {
+				// Hide the graph container
+				document.getElementById('container1').style.display = 'none';
+				document.getElementById('calendarButtonToday').style.display = 'block';
+				document.getElementById('calendarButtonMonth').style.display = 'none';
+				document.getElementById('pulseCountCircle').style.display = 'block';
+				document.getElementById('yearPicker').style.display = 'none';
+				document.getElementById('weekTotalPulseCount').style.display = 'none';
+				document.getElementById('monthTotalPulseCount').style.display = 'none';
+				document.getElementById('yearTotalPulseCount').style.display = 'none';
+				$('.loader').show();
+
+				fetch('/api/auth/totalPulseCountForToday')
+					.then(response => response.json())
+					.then(totalPulseCount => displayTotalPulseCount(totalPulseCount));
+			}
+
+			function displayTotalPulseCount(totalPulseCount) {
+				document.getElementById('pulseCountCircle').textContent = totalPulseCount;
+			}
+
+
+			//Calender Button Today
+			var currentDate = new Date();
+			// Format the current date as 'yyyy-mm-dd'
+			var dateString = currentDate.getFullYear() + '-' + String(currentDate.getMonth() + 1).padStart(2, '0') + '-' + String(currentDate.getDate()).padStart(2, '0');
+			// Set the value of the date input to the current date
+			document.getElementById('calendarButtonToday').value = dateString;
+
+			document.getElementById('calendarButtonToday').addEventListener('change', function (e) {
+				e.preventDefault();
+				var selectedDate = this.value;
+				fetchTotalPulseCountForDate(selectedDate);
+			});
+
+			function fetchTotalPulseCountForDate(date) {
+				// Hide the graph container
+				document.getElementById('container1').style.display = 'none';
+				document.getElementById('calendarButtonToday').style.display = 'block';
+				document.getElementById('calendarButtonMonth').style.display = 'none';
+				document.getElementById('pulseCountCircle').style.display = 'block';
+				document.getElementById('yearPicker').style.display = 'none';
+				document.getElementById('weekTotalPulseCount').style.display = 'none';
+				document.getElementById('monthTotalPulseCount').style.display = 'none';
+				document.getElementById('yearTotalPulseCount').style.display = 'none';
+				$('.loader').hide();
+
+				fetch('/api/auth/totalPulseCountForDate?date=' + date)
+					.then(response => response.json())
+					.then(totalPulseCount => displayTotalPulseCount(totalPulseCount));
+			}
+
+
+			//Weekly Button
+			function fetchAndRenderWeekReport() {
+				// Show the graph container
+				document.getElementById('container1').style.display = 'block';
+				document.getElementById('calendarButtonToday').style.display = 'none';
+				document.getElementById('calendarButtonMonth').style.display = 'none';
+				document.getElementById('pulseCountCircle').style.display = 'none';
+				document.getElementById('yearPicker').style.display = 'none';
+				document.getElementById('weekTotalPulseCount').style.display = 'block';
+				document.getElementById('monthTotalPulseCount').style.display = 'none';
+				document.getElementById('yearTotalPulseCount').style.display = 'none';
+				$('.loader').hide();
+
+				$.get('/api/auth/totalReportsWeekly', function (data) {
+
+					updateChart1(data.dates, data.pulseCounts);
+
+					// Calculate the total pulse count
+					var totalPulseCount = data.pulseCounts.reduce((a, b) => a + b, 0);
+
+					// Update the div element with the total pulse count
+					$('#weekTotalPulseCount').text('Total Pulse Count for the Last 7 Days: ' + totalPulseCount);
+					$('#weekTotalPulseCount').show();
+				});
+			}
+
+			//Monthly Button
+			function fetchAndRenderMonthReport() {
+				// Show the graph container
+				document.getElementById('container1').style.display = 'block';
+				document.getElementById('calendarButtonToday').style.display = 'none';
+				document.getElementById('calendarButtonMonth').style.display = 'block';
+				document.getElementById('pulseCountCircle').style.display = 'none';
+				document.getElementById('yearPicker').style.display = 'none';
+				document.getElementById('weekTotalPulseCount').style.display = 'none';
+				document.getElementById('monthTotalPulseCount').style.display = 'block';
+				document.getElementById('yearTotalPulseCount').style.display = 'none';
+				$('.loader').hide();
+
+				$.get('/api/auth/totalReportsMonthly', function (data) {
+					updateChart1(data.dates, data.pulseCounts);
+
+					// Update the 'monthTotalPulseCount' div with the total pulse count for the current month
+					$('#monthTotalPulseCount').text('Total Pulse Count for the Current Month: ' + data.currentMonthTotalPulseCount);
+					$('#monthTotalPulseCount').show();
+
+					//	var totalPulseCount = data.pulseCounts.reduce((a, b) => a + b, 0);
+
+					// Update the div element with the total pulse count
+					//	$('#monthTotalPulseCount').text('Total Pulse Count for the Last 12 Months: ' + totalPulseCount);
+					//	$('#monthTotalPulseCount').show();
+
+				});
+			}
+
+			//Calnder Monthly Button
+			var monthString = currentDate.getFullYear() + '-' + String(currentDate.getMonth() + 1).padStart(2, '0');
+
+			// Set the value of the month input to the current month
+			document.getElementById('calendarButtonMonth').value = monthString;
+			document.getElementById('calendarButtonMonth').addEventListener('change', function (e) {
+				e.preventDefault();
+				var selectedMonth = this.value;  // Get the selected month
+				fetchTotalPulseCountForMonth(selectedMonth);
+			});
+			function fetchTotalPulseCountForMonth(month) {
+				// Show the graph container and hide the pulse count circle
+				document.getElementById('container1').style.display = 'block';
+				document.getElementById('calendarButtonToday').style.display = 'none';
+				document.getElementById('calendarButtonMonth').style.display = 'block';
+				document.getElementById('pulseCountCircle').style.display = 'none';
+				document.getElementById('yearPicker').style.display = 'none';
+				document.getElementById('weekTotalPulseCount').style.display = 'none';
+				document.getElementById('monthTotalPulseCount').style.display = 'block';
+				document.getElementById('yearTotalPulseCount').style.display = 'none';
+				$('.loader').hide();
+
+				fetch('/api/auth/totalPulseCountForMonth?month=' + month)
+					.then(response => response.json())
+					.then(data => {
+						// Extract the dates and pulse counts from the data
+						var dates = data.map(item => item[0]);
+						var pulseCounts = data.map(item => item[1]);
+
+						// Create an array of objects, each with a date and pulseCount property
+						var formattedData = dates.map((date, index) => ({
+							date: new Date(date), // Convert date string to Date object
+							pulseCount: pulseCounts[index]
+						}));
+
+						// Sort the data array by the date property
+						formattedData.sort((a, b) => a.date - b.date);
+
+						// Extract the sorted dates and pulse counts
+						dates = formattedData.map(item => {
+							var date = item.date;
+							// Format date as 'yyyy-mm-dd'
+							return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+						});
+						pulseCounts = formattedData.map(item => item.pulseCount);
+						// Update the chart with the fetched data
+						updateChart1(dates, pulseCounts);
+						// Calculate the total pulse count
+						var totalPulseCount = pulseCounts.reduce((a, b) => a + b, 0);
+
+						// Update the div element with the total pulse count
+						$('#monthTotalPulseCount').text('Total Pulse Count for the Month: ' + totalPulseCount);
+						$('#monthTotalPulseCount').show();
+
+					});
+			}
+
+			//Yearly Button
+			function fetchAndRenderYearReport() {
+				// Show the graph container
+				document.getElementById('container1').style.display = 'block';
+				document.getElementById('calendarButtonToday').style.display = 'none';
+				document.getElementById('calendarButtonMonth').style.display = 'none';
+				document.getElementById('pulseCountCircle').style.display = 'none';
+				document.getElementById('yearPicker').style.display = 'block';
+				document.getElementById('weekTotalPulseCount').style.display = 'none';
+				document.getElementById('monthTotalPulseCount').style.display = 'none';
+				document.getElementById('yearTotalPulseCount').style.display = 'block';
+				$('.loader').hide();
+
+				$.get('/api/auth/totalReportsYearly', function (data) {
+					updateChart1(data.dates, data.pulseCounts);
+
+					// Update the 'yearTotalPulseCount' div with the total pulse count for the current month
+					$('#yearTotalPulseCount').text('Total Pulse Count for the Current Year: ' + data.currentYearTotalCount);
+					$('#yearTotalPulseCount').show();
+
+					//	var totalPulseCount = data.pulseCounts.reduce((a, b) => a + b, 0);
+					// Update the div element with the total pulse count
+					//	$('#yearTotalPulseCount').text('Total Pulse Count for the Last 5 Years: ' + totalPulseCount);
+					//	$('#yearTotalPulseCount').show();
+				});
+			}
+
+			//Calender Yearly Button
+			var select = document.getElementById("yearPicker");
+			var startYear = 1900;
+			var endYear = new Date().getFullYear();
+			for (var year = endYear; year >= startYear; year--) {
+				var option = document.createElement("option");
+				option.text = year;
+				option.value = year;
+				select.appendChild(option);
+			}
+			select.addEventListener('change', function () {
+				var year = this.value;
+				fetch('/api/auth/totalPulseCountForYear/' + year)
+					.then(response => response.json())
+					.then(data => {
+						// Initialize an array to hold the total pulse counts for each month
+						var pulseCounts = Array(12).fill(0);
+						data.forEach(user => {
+							var date = new Date(user.dateCreated);
+							var month = date.getMonth(); // getMonth() returns a zero-based value (where zero indicates the first month of the year)
+							pulseCounts[month] += user.pulseCount;
+						});
+						var dates = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+						updateChart1(dates, pulseCounts);
+						// Calculate the total pulse count
+						var totalPulseCount = pulseCounts.reduce((a, b) => a + b, 0);
+
+						// Update the div element with the total pulse count
+						$('#yearTotalPulseCount').text('Total Pulse Count for the Year: ' + totalPulseCount);
+						$('#yearTotalPulseCount').show();
+					});
+			});
+
+			// Pulse Count of Today's Date'
+			document.getElementById('todayButton').addEventListener('click', function (e) {
+				e.preventDefault();
+				fetchTotalPulseCountForToday();
+			});
+
+			$('#weekButton').click(function (e) {
+				e.preventDefault();
+				fetchAndRenderWeekReport();
+			});
+
+			$('#monthButton').click(function (e) {
+				e.preventDefault();
+				fetchAndRenderMonthReport();
+			});
+
+			$('#yearButton').click(function (e) {
+				e.preventDefault();
+				fetchAndRenderYearReport();
+			});
+
+			// Initialize the chart with today's data when the page loads
+			fetchTotalPulseCountForToday();
+		});
+	</script>
+
+
+</body>
+</head>
+
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<h2 th:text="${fail}"></h2>
+	<h2 th:text="${pass}"></h2>
+	<h2>Add New Blog</h2>
+	<form action="/api/auth/saveBlog" method="post">
+		<fieldset>
+			<legend>Enter Blog Details:</legend>
+			<label for="imageUrl">Image URL:</label>
+			<input type="text" id="imageUrl" name="imageUrl" required></br></br>
+
+			<label for="videoUrl">Video URL:</label>
+			<input type="text" id="videoUrl" name="videoUrl" required></br></br>
+
+			<button type="submit">Save</button>
+		</fieldset>
+	</form>
+	<a href="/api/auth/home"><button>Back</button></a>
+</body>
+
+</html>

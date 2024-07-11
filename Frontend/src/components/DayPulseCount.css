@@ -1,0 +1,58 @@
+.DayPulseCountContent{
+
+    display: flex;
+    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+}
+
+.CircularProgressBar{
+
+    width: 25%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+}
+
+.DayPulseCountDatePicker{
+    float: right;
+    display: block;
+    margin-right: 50px;
+   
+}
+
+/* @media (max-width: 1300px) {
+    .CircularProgressBar{
+        margin-top: 20px;
+        width: 70%;
+    }
+  } */
+
+
+@media screen and (max-width: 900px) {
+    .CircularProgressBar{
+      width: 40%;
+      margin-top: 50px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .CircularProgressBar{
+      width: 50%;
+      margin-top: 50px;
+    }
+}
+@media screen and (max-width: 425px) {
+    .CircularProgressBar{
+      width: 80%;
+      float: left;
+      margin-top: 60px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .CircularProgressBar{
+      width: 100%;
+      margin-top: 60px;
+    }
+}

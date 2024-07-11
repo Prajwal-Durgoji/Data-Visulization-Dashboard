@@ -1,0 +1,20 @@
+@media screen and (max-width: 425px) {
+    .LastWeekPulseCount{
+      margin-top: 90px;
+    }
+}
+
+/* 
+@media screen and (max-width: 320px) {
+    .LastWeekPulseCountLineChart{
+        height: 100%;
+    }
+    canvas{
+        height: 500;
+    }
+    .LastWeekPulseCount{
+      width: 70%;
+      height: 60%;
+      margin-top: 50px;
+    }
+} */

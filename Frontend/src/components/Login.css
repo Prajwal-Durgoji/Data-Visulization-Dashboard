@@ -1,0 +1,81 @@
+.Login{
+  
+  font-family: 'Satisfy', cursive;
+  font-size: 25px;
+  margin: auto;
+  width: 30%;
+}
+.Email ,.Password{
+  font-weight: bold;
+  width: 80%;
+  font-size: 20px;
+  padding: 10px;
+  outline:none;
+  border-radius: 5px;
+  transition: width 1s ;
+  
+  margin-bottom: 15px;
+  box-shadow: -3px -3px 7px #f5f5f5,
+              3px 3px 7px #bbc3cc
+}
+.Email:focus, .Password:focus{
+  width: 100%;
+  border-radius: 5px;
+  border-width: 2px;
+  border-style: outset;
+  outline: none;
+  border-color: rgb(0, 0, 0);
+  box-shadow: -3px -3px 7px #f5f5f5 inset,
+  3px 3px 7px #bbc3cc inset;
+}
+
+.LoginSubmit{
+  width:80%;
+  font-size: 25px;
+  margin-bottom: 10px;
+  margin-left: 20px;
+  margin-top: 10px;
+  color: #708090;
+  background-color: white;
+  border-radius: 50px;
+  border: none;
+
+  outline:none;
+  transition: width 1s ;
+  box-shadow: -3px -3px 7px #f5f5f5,
+              3px 3px 7px #bbc3cc
+
+}
+
+.LoginSubmit:focus{
+  outline: none;
+  border:none;
+}
+
+.LoginSubmit:hover{
+  font-weight: bold;
+}
+
+.LoginSubmit:active{
+
+  box-shadow: -3px -3px 7px #f5f5f5 inset,
+  3px 3px 7px #bbc3cc inset;
+  font-size: 20px;
+  outline: none;
+  border: none;
+  user-select: none;
+  background-color: white;
+}
+
+
+@media (max-width: 768px) {
+  .Login{
+    width: 90%;
+    grid-gap: 1px;
+    margin-top: 2em;
+    margin-left: 1em;
+    margin-right: 1em;
+    grid-template-columns: repeat(12, 1fr);
+  }
+}
+

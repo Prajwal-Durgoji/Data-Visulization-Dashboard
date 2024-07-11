@@ -1,0 +1,16 @@
+
+@media screen and (max-width: 425px) {
+    .YearPulseCount{
+      margin-top: 80px;
+    }
+    .YearPulseCountDatePicker{
+        margin-top:10px ;
+        margin-right: 10px;
+        position: absolute;
+        top: 180px;
+        right:0px;
+    }
+    /* .MonthPulseCountBarChart{
+        margin-top: 100px;
+    } */
+}

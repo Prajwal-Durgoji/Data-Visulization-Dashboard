@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+	<meta charset="ISO-8859-1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+	<title>Report: </title>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.debug.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/canvg/1.5/canvg.min.js"></script>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.5.4/c3.css" rel="stylesheet">
+	<script src="https://d3js.org/d3.v4.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.5.4/c3.js"></script>
+	<style>
+		* {
+			margin: 0 auto;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		#container1 {
+			position: relative;
+			top: 150px;
+		}
+
+		.card {
+			border-radius: 5px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+			display: flex;
+			flex-direction: column;
+			align-items: left;
+		}
+
+		.header {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+
+		.header h1 {
+			font-size: 24px;
+			margin-bottom: 5px;
+		}
+
+		.header h2 {
+			font-size: 18px;
+			color: #999;
+
+		}
+
+		.patient-info {
+			border-top: 1px solid #ddd;
+			padding-top: 5px;
+			color: rgb(64, 0, 64);
+		}
+
+		.patient-info h2 {
+			text-align: left;
+			margin-bottom: 10px;
+			border: 2px solid blue;
+			background-color: blue;
+			color: white;
+
+		}
+
+		.patient-details {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+		}
+
+		.patient-details b {
+			font-weight: bold;
+		}
+
+		.patient-details p {
+			margin-bottom: 5px;
+		}
+
+
+		@media only screen and (max-width: 600px) {
+			.patient-details {
+				flex-direction: column;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div class="card">
+		<div class="header">
+			<img src="./logo.png" alt="nadifit logo">
+		</div>
+		<div class="contact">
+			<h3>Dr. V Simha</h3>
+			<p>
+				<a>9123456780</a> |
+				<a>simha1989@gmail.com</a>
+			</p>
+		</div>
+		<div class="address">
+			<p>Acupuncture Center</p>
+			<p>#17, Vijayanagar, 7th phase, Bengaluru, Karnataka - 560040</p>
+		</div>
+	</div>
+	<div class="patient-info">
+		<h2>Patient Information</h2>
+		<div class="patient-details">
+			<p>
+				<b>PATIENT NAME:</b> Ajay
+				<b>PATIENT ID:</b> 2106
+			</p>
+			<p>
+				<b>AGE:</b> 34 Years
+				<b>HEIGHT:</b> 175 cm
+				<b>REPORT DATE:</b> 23/06/2023
+			</p>
+			<p>
+				<b>GENDER:</b> Male
+				<b>WEIGHT:</b> 71 kg
+				<b>REPORT TIME:</b> 01:27 PM
+			</p>
+		</div>
+	</div>
+
+
+	<div id="container1" style="width: 800px; height: 500px;"></div>
+	<!--<button id="btn">Export to PDF</button>-->
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="https://code.highcharts.com/highcharts.js"></script>
+	<script src="https://code.highcharts.com/modules/series-label.js"></script>
+	<!-- <script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<script src="https://code.highcharts.com/modules/export-data.js"></script>-->
+	<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+	<script th:inline="javascript">
+    $(function () {
+        function updateChart1(data) {
+            // First, let's group the data by category
+            var groupedData = {};
+            data.forEach(function (item) {
+                if (!groupedData[item.category]) {
+                    groupedData[item.category] = [];
+                }
+                groupedData[item.category].push(item);
+            });
+
+            // Now, let's create the series data for Highcharts
+            var seriesData = [];
+            for (var category in groupedData) {
+                var categoryData = groupedData[category];
+                var seriesItem = {
+                    name: 'Category ' + category,
+                    data: []
+                };
+                categoryData.forEach(function (item) {
+                    seriesItem.data.push(item.pcount);
+                });
+                seriesData.push(seriesItem);
+            }
+
+            Highcharts.chart('container1', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Organ Energy Levels'
+                },
+                xAxis: {
+                    categories: data.map(item => item.pname)
+                },
+                credits: {
+                    enabled: false
+                },
+                plotOptions: {
+                    column: {
+                        borderRadius: '25%',
+                        stacking: 'normal'
+                    }
+                },
+                exporting: {
+                    enabled: true
+                },
+                series: seriesData
+            });
+        }
+        $.get('/api/auth/generateReport', function (data) {
+            updateChart1(data);
+        });
+    });
+</script>
+
+</body>
+
+</html>

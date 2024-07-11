@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Insert title here</title>
+</head>
+
+<body>
+	<h1>Banner Page</h1>
+	<div>
+		<h2 th:text="${fail}"></h2>
+		<h2 th:text="${pass}"></h2>
+
+		<!-- Display Existing Banners -->
+		<div th:each="banner, status : ${banners}" th:if="${status.index < 4}">
+			<div>
+				<textarea th:text="${banner.text}" style="width: 300px; height: 100px;"></textarea>
+				<form th:action="@{/api/auth/deleteBanner}" th:method="get">
+					<input type="hidden" name="bannerId" th:value="${banner.id}" />
+					<button type="button" th:attr="data-banner-id=${banner.id}" onclick="deleteBanner(this)">Delete</button>
+				</form>
+			</div>
+			<br><br>
+		</div>
+
+		<!-- Add New Banner -->
+		<h2>Add New Banner</h2>
+		<form action="/api/auth/saveBanner" method="post">
+			<fieldset>
+				<legend>Enter Banner Text:</legend>
+				<textarea name="text1" style="width: 300px; height: 100px;" required
+					placeholder="Enter text 1"></textarea></br></br>
+				<textarea name="text2" style="width: 300px; height: 100px;" required
+					placeholder="Enter text 2"></textarea></br></br>
+				<textarea name="text3" style="width: 300px; height: 100px;" required
+					placeholder="Enter text 3"></textarea></br></br>
+				<textarea name="text4" style="width: 300px; height: 100px;" required
+					placeholder="Enter text 4"></textarea></br></br>
+				<button type="submit">Save</button>
+			</fieldset>
+		</form>
+
+		<a href="/api/auth/home"><button>Back</button></a>
+	</div>
+	<!-- JavaScript function to submit the form with banner ID for deletion -->
+	<!--<script>
+		function deleteBanner(bannerId) {
+			if (confirm("Are you sure you want to delete this banner?")) {
+				document.location = '/api/auth/deleteBanner?bannerId=' + bannerId;
+			}
+		}
+	</script>-->
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script>
+		function deleteBanner(button) {
+			var bannerId = $(button).data('banner-id');
+
+			if (confirm("Are you sure you want to delete this banner?")) {
+				$.ajax({
+					type: "GET",
+					url: "/api/auth/deleteBanner",
+					data: {bannerId: bannerId},
+					success: function () {
+						// Remove the deleted banner from the DOM
+						$(button).closest('div').remove();
+						alert("Banner deleted successfully!");
+					},
+					error: function () {
+						alert("Error deleting the banner.");
+					}
+				});
+			}
+		}
+	</script>
+	<script>
+		function saveBanner() {
+			var formData = $('#bannerForm').serialize();
+
+			$.ajax({
+				type: "POST",
+				url: "/api/auth/saveBanner",
+				data: formData,
+				success: function () {
+					alert("Banner saved successfully!");
+					// Optionally, clear the form or update the UI as needed
+					$('#bannerForm')[0].reset();
+				},
+				error: function () {
+					alert("Error saving the banner.");
+				}
+			});
+		}
+	</script>
+	<!--<script>
+		function deleteBanner(button) {
+			var bannerId = button.getAttribute('data-banner-id');
+			// Perform the deletion using the bannerId, e.g., make an Ajax request to your server
+			alert('Deleting banner with id: ' + bannerId);
+		}
+	</script>-->
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+
+.TransactionsComponent{
+    
+    width:70%;
+    display: flex;
+    align-items: center;
+    margin: auto;
+    flex-direction: column;
+    font-family: 'Roboto',
+    sans-serif;
+}
+
+.TransactionsTable{
+    width: 100%;
+    margin: 5px;
+    padding: 1px;
+    text-align: center;
+    box-shadow: 0px 0px 25px #232349,
+    0px 0px 50px #13151f;
+    font-family: 'Roboto',
+    sans-serif;
+    
+}
+
+.Transactions{
+    grid-gap: 10px;
+    margin-top: 1em;
+    margin-left: 5em;
+    margin-right: 2em;
+    
+    grid-template-columns: repeat(12, 1fr);
+
+}
+
+
+@media (max-width: 768px) {
+
+    .Transactions{
+        margin-top: 0em;
+        margin-left: 1em;
+        margin-right: 1em;
+        margin-bottom: 0em;
+    }
+}

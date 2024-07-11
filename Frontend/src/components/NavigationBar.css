@@ -1,0 +1,114 @@
+.NavigationBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    color: white;
+    padding: 10px;
+    /* margin-right: 10px; */
+    font-family: 'Satisfy', cursive;
+    /* margin-left: 10px; */
+    background-color: #0b0b16;
+}
+
+
+
+.MenuBar {
+    position: absolute;
+    top: 68px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(rgb(10, 10, 56), black);
+    z-index: 200;
+    opacity: 0.9;
+}
+
+.MenuBar a {
+    color: rgb(255, 255, 255);
+    display: block;
+    font-size: 30px;
+    font-weight: bold;
+    margin: auto;
+    padding-left: 0px;
+    padding-Right: 0px;
+    padding-top: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    padding-bottom: 5px;
+    text-align: center;
+
+
+}
+
+
+.MenuBarRowtrue {
+    background-color: rgb(0, 0, 211);
+}
+
+.NavigationBar a {
+    text-decoration: none;
+    color: white;
+
+}
+
+.LoginBtn {
+    box-shadow: -3px -3px 7px #101114, 3px 3px 7px #5a5b61;
+    border-radius: 5px;
+    font-size: 20px;
+    color: white;
+    padding: 5px;
+    /* color:#414661 */
+
+}
+
+.LoginBtn:hover {
+    opacity: 0.7;
+}
+
+
+.LoginBtn:active {
+
+    box-shadow: -3px -3px 7px #101114 inset,
+        3px 3px 7px #6d6e74 inset;
+    font-size: 18px;
+}
+
+.MenuBarIcon i {
+    transform: rotate(0deg);
+    animation-name: rotateBars;
+
+}
+
+.MenuBarIcon i:active {
+    animation: rotateBars infinite 2s linear;
+}
+
+
+@media screen and (max-width: 425px) {
+    .Navtitle {
+        font-size: 15px;
+
+    }
+
+    .NavigationBar a {
+        font-size: 15px;
+    }
+
+}
+
+@keyframes rotateBars {
+    from {
+        transform: rotate(0deg);
+    }
+
+    /* 50%{
+        transform: rotate(90deg);
+
+    } */
+
+    to {
+        transform: rotate(360deg);
+    }
+}

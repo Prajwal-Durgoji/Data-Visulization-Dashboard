@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="ISO-8859-1">
+	<title>Insert title here</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<style>
+		html,
+		body {
+			background: #6a11cb;
+			background: -webkit-linear-gradient(to right, #1655e0, #ff8500);
+			background: linear-gradient(to right, #1655e0, #ff8500)
+		}
+
+		h1 {
+			color: rgb(255, 255, 255);
+			text-align: center;
+			padding: 20px;
+			font-family: 'Arial', sans-serif;
+			font-size: 2.5em;
+			text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
+
+		}
+
+		.table-dark .header-color {
+			color: rgb(255, 128, 0) !important;
+		}
+
+
+
+		#nameSearch,
+		#emailSearch{
+			background-color: transparent;
+			border: 2px solid white;
+			border-radius: 10px;
+			padding: 5px;
+			color: white;
+		}
+
+		#nameSearch::placeholder {
+			color: rgb(0, 0, 0);
+		}
+
+		#emailSearch::placeholder {
+			color: rgb(0, 0, 0);
+		}
+
+		#phoneSearch::placeholder {
+			color: rgb(0, 0, 0);
+		}
+
+		#rowsPerPage {
+			position: relative;
+			left: 650px;
+			background-color: transparent;
+			border: 1px solid white;
+			color: rgb(0, 0, 0);
+			border-radius: 8px;
+			height: 26px;
+		}
+		
+		.pagination {
+			list-style: none;
+			display: inline-block;
+			padding: 0;
+			margin-top: 10px;
+		}
+
+		.pagination li {
+			display: inline;
+			text-align: center;
+		}
+
+		.pagination a {
+			float: left;
+			display: block;
+			font-size: 14px;
+			text-decoration: none;
+			padding: 5px 12px;
+			color: #fff;
+			margin-left: -1px;
+			border: 1px solid transparent;
+			line-height: 1.5;
+			transition: background-color .3s;
+		}
+
+		.pagination a.active {
+			cursor: default;
+		}
+
+		.pagination a:active {
+			outline: none;
+		}
+
+		.pagination a:hover:not(.active) {
+			background-color: rgb(0, 128, 255);
+		}
+	</style>
+</head>
+
+<body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<div class="gradient-custom-2">
+		<h1>Transcation List</h1>
+		<div class="mask d-flex align-items-center">
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-12">
+						
+						<input id="nameSearch" value="" placeholder="Search For Name">
+						<input id="emailSearch" value="" placeholder="Search For Email">
+						<select id="rowsPerPage">
+							<option value="10">10</option>
+							<option value="20">20</option>
+							<option value="50">50</option>
+							<option value="100">100</option>
+						</select>
+						<div class="table-responsive">
+
+							<table class="table table-dark table-bordered mb-0">
+								<thead>
+									<tr>
+										<th class="header-color">ID</th>
+										<th class="header-color">Name</th>
+										<th class="header-color">Email</th>
+										<th class="header-color">Recharge Date</th>
+										<th class="header-color">Pulse</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="user : ${userList}">
+										<td th:text="${user.id}"></td>
+										<td th:text="${user.name}"></td>
+										<td th:text="${user.email}"></td>
+										<td th:text="${user.rechargeDate}"></td>
+										<td th:text="${user.pulseCount}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<ul class="pagination"></ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+
+		var rowsPerPage = 10;
+		var currentPage = 1;
+
+		// When the page loads
+		window.onload = function () {
+			// Get all the rows in the table
+			var rows = document.querySelectorAll(".table tr");
+
+			// Calculate the total number of pages
+			var totalPages = Math.ceil((rows.length - 1) / rowsPerPage); // Subtract 1 for the header row
+
+			// Get the pagination container
+			var pagination = document.querySelector(".pagination");
+
+			// Create the 'Previous' button
+			var li = document.createElement("li");
+			var a = document.createElement("a");
+			a.href = "#";
+			a.textContent = "Previous";
+			a.classList.add("prev");
+			li.appendChild(a);
+			pagination.appendChild(li);
+
+
+			// Create the pagination links
+			for (var i = 1; i <= totalPages; i++) {
+				var li = document.createElement("li");
+				var a = document.createElement("a");
+				a.href = "#";
+				a.textContent = i;
+				li.appendChild(a);
+				pagination.appendChild(li);
+			}
+
+			// Create the 'Next' button
+			var li = document.createElement("li");
+			var a = document.createElement("a");
+			a.href = "#";
+			a.textContent = "Next";
+			a.classList.add("next");
+			li.appendChild(a);
+			pagination.appendChild(li);
+
+			// Get the pagination links
+			var links = document.querySelectorAll("a");
+
+			// Get the select element for rows per page
+			var select = document.querySelector("select");
+			select.onchange = function () {
+				rowsPerPage = this.value;
+				showPage();
+			};
+
+			// Function to show the current page
+			function showPage() {
+				for (var i = 1; i < rows.length; i++) {
+					if (Math.ceil(i / rowsPerPage) === currentPage) {
+						rows[i].style.display = "";
+					} else {
+						rows[i].style.display = "none";
+					}
+				}
+			}
+
+			// Add click event to each pagination link
+			for (var i = 0; i < links.length; i++) {
+				links[i].addEventListener("click", function (e) {
+					e.preventDefault();
+					// Get the page number from the link text
+					var pageNum = parseInt(this.textContent);
+					if (!isNaN(pageNum)) {
+						currentPage = pageNum;
+					} else if (this.classList.contains("prev")) {
+						// If the clicked link is the previous button, decrease the current page
+						currentPage = Math.max(1, currentPage - 1);
+					} else if (this.classList.contains("next")) {
+						// If the clicked link is the next button, increase the current page
+						currentPage = Math.min(totalPages, currentPage + 1); // Subtract 2 for the prev and next buttons
+
+					}
+					showPage();
+				});
+			}
+
+			// Show the first page
+			showPage();
+		};
+		// Debounce function
+		function debounce(func, wait) {
+			var timeout;
+			return function () {
+				var context = this, args = arguments;
+				var later = function () {
+					timeout = null;
+					func.apply(context, args);
+				};
+				clearTimeout(timeout);
+				timeout = setTimeout(later, wait);
+			};
+		};
+
+		// Create a function to filter the table based on the search bar value
+		function filterTable(searchBarId, columnIndex) {
+			$(searchBarId).keyup(debounce(function () {
+				var data = this.value.split(" ");
+				//create a jquery object of the rows
+				var jo = $(".table").find("tr");
+				if (this.value == "") {
+					jo.show();
+					return;
+				}
+				//hide all the rows
+				jo.hide();
+
+				//Recusively filter the jquery object to get results.
+				jo.filter(function (i, v) {
+					var $t = $(this);
+					// Get the specified column
+					var td = $t.find("td:eq(" + columnIndex + ")");
+					var txtValue = td.text();
+					for (var d = 0; d < data.length; ++d) {
+						if (txtValue.toUpperCase().indexOf(data[d].toUpperCase()) > -1) {
+							return true;
+						}
+					}
+					return false;
+				})
+					.show();
+			}, 300)).focus(function () {
+				this.value = "";
+				$(this).css({
+					"color": "black"
+				});
+				$(this).unbind('focus');
+			}).css({
+				"color": "#C0C0C0"
+			});
+		}
+
+		// Call the function for each search bar
+		filterTable("#nameSearch", 1);  // Name is in the second column
+		filterTable("#emailSearch", 2);  // Email is in the third column
+	</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,28 @@
+.errorHandler{
+   
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0.9;
+    width: 50%;
+    background-color: black;
+    margin: auto;
+    min-height: 70vh; 
+}
+
+.errorHandlerContent{
+    background-color: white;
+    padding: 30px;
+    box-shadow:  -3px -3px 7px #5a5b61, 3px 3px 7px #5a5b61;
+    border-radius: 5px;
+    
+}
+
+
+@media (max-width: 768px) {
+
+    .errorHandler{
+        width: 90%;
+    }
+}

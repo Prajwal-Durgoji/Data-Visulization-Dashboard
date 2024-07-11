@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="ISO-8859-1" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+	<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap"
+		rel="stylesheet">
+
+	<style>
+		html,
+		body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+			font-family: "Poppins", sans-serif;
+		}
+
+		.sidebar {
+			position: fixed;
+			left: 0;
+			top: 0;
+			height: 100%;
+			width: 78px;
+			background: rgb(255, 255, 255);
+			padding: 6px 14px;
+			z-index: 99;
+			transition: all 0.5s ease;
+			border: 6px solid #1655e0;
+		}
+
+		.sidebar.open {
+			width: 250px;
+		}
+
+		.sidebar .logo-details {
+			height: 60px;
+			display: flex;
+			align-items: center;
+			position: relative;
+		}
+
+		.sidebar .logo-details .icon {
+			opacity: 0;
+			transition: all 0.5s ease;
+		}
+
+		.sidebar .logo-details .logo_name {
+			color: #fff;
+			font-size: 20px;
+			font-weight: 600;
+			opacity: 0;
+			transition: all 0.5s ease;
+		}
+
+		.sidebar.open .logo-details .icon,
+		.sidebar.open .logo-details .logo_name {
+			opacity: 1;
+		}
+
+		.sidebar .logo-details #btn {
+			display: none;
+			position: absolute;
+			top: 50%;
+			right: 0;
+			transform: translateY(-50%);
+			font-size: 22px;
+			transition: all 0.4s ease;
+			font-size: 23px;
+			text-align: center;
+			cursor: pointer;
+			transition: all 0.5s ease;
+		}
+
+		.sidebar.open .logo-details #btn {
+			text-align: right;
+		}
+
+		.sidebar i {
+			color: #fff;
+			height: 60px;
+			min-width: 50px;
+			font-size: 88px;
+			text-align: center;
+			line-height: 60px;
+		}
+
+		.sidebar .nav-list {
+			margin-top: 20px;
+			height: 100%;
+		}
+
+		.sidebar li {
+			position: relative;
+			margin: 8px 0;
+			list-style: none;
+		}
+
+		.sidebar li .tooltip {
+			position: absolute;
+			top: -20px;
+			left: calc(100% + 15px);
+			z-index: 3;
+			background: #fff;
+			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+			padding: 6px 12px;
+			border-radius: 4px;
+			font-size: 15px;
+			font-weight: 400;
+			opacity: 0;
+			white-space: nowrap;
+			pointer-events: none;
+			transition: 0s;
+		}
+
+		.sidebar li:hover .tooltip {
+			opacity: 1;
+			pointer-events: auto;
+			transition: all 0.4s ease;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
+		.sidebar.open li .tooltip {
+			display: none;
+		}
+
+		.sidebar input {
+			font-size: 15px;
+			color: #FFF;
+			font-weight: 400;
+			outline: none;
+			height: 50px;
+			width: 100%;
+			width: 50px;
+			border: none;
+			border-radius: 12px;
+			transition: all 0.5s ease;
+			background: #1d1b31;
+		}
+
+		.sidebar.open input {
+			padding: 0 20px 0 50px;
+			width: 100%;
+		}
+
+		.sidebar .bx-search {
+			position: absolute;
+			top: 50%;
+			left: 0;
+			transform: translateY(-50%);
+			font-size: 22px;
+			background: #1d1b31;
+			color: #FFF;
+		}
+
+		.sidebar.open .bx-search:hover {
+			background: #1d1b31;
+			color: #FFF;
+		}
+
+		.sidebar .bx-search:hover {
+			background: #FFF;
+			color: #11101d;
+		}
+
+		.sidebar li a {
+			display: flex;
+			height: 100%;
+			width: 100%;
+			border-radius: 12px;
+			align-items: center;
+			text-decoration: none;
+			transition: all 0.4s ease;
+			background: rgb(255, 255, 255);
+			padding: 0px;
+		}
+
+		.nav-list li a img {
+			width: 113px;
+			height: 32px;
+			position: relative;
+			left: 0px;
+		}
+
+
+
+		.sidebar li a .links_name {
+			color: #fff;
+			font-size: 15px;
+			font-weight: 400;
+			white-space: nowrap;
+			opacity: 0;
+			pointer-events: none;
+			transition: 0.4s;
+		}
+
+		.sidebar.open li a .links_name {
+			opacity: 1;
+			pointer-events: auto;
+		}
+
+		.sidebar li a:hover .links_name,
+		.sidebar li a:hover img {
+			transition: all 0.5s ease;
+			color: #11101D;
+		}
+
+		.sidebar li i {
+			height: 50px;
+			line-height: 50px;
+			font-size: 28px;
+			border-radius: 12px;
+		}
+
+		/**	.main-content {
+			width: calc(100% - 78px);
+			height: 695px;
+			margin-left: 78px;
+			transition: margin-left 0.5s ease, width 0.5s ease;
+		} **/
+
+		iframe::-webkit-scrollbar {
+			display: none;
+		}
+
+		iframe {
+			-ms-overflow-style: none;
+			scrollbar-width: none;
+		}
+
+		.main-content::-webkit-scrollbar {
+			display: none;
+		}
+
+		.main-content {
+			-ms-overflow-style: none;
+			scrollbar-width: none;
+			width: 100%;
+			height: 100%;
+			overflow-y: hidden;
+		}
+
+		/**	.main-content iframe {
+			width: 100%;
+			height: 100%;
+			overflow-y: hidden;
+		} **/
+
+		.nadifitlogo {
+			position: relative;
+			width: 47px;
+			height: 48px;
+			right: 115px;
+		}
+
+
+		html,
+		body {
+			background: linear-gradient(to right, #1655e0, #ff8500)
+		}
+
+		.loader {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			width: 300px;
+			height: 300px;
+			box-sizing: border-box;
+		}
+
+		.loader .face {
+			position: absolute;
+			border: 2px solid #121212;
+		}
+
+		.loader .face.face1 {
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: 090909;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+			border-radius: 50%;
+			border-left: 2px solid #ffff00;
+			border-top: 2px solid #ffff00;
+			animation: ani1 3s linear infinite;
+		}
+
+		.loader .face.face2 {
+			top: 30px;
+			left: 30px;
+			right: 30px;
+			bottom: 30px;
+			background: rgb(255, 255, 255);
+			box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+			border-radius: 50%;
+			border-right: 2px solid #03a9f4;
+			border-bottom: 2px solid #03a9f4;
+			animation: ani2 3s linear infinite;
+
+		}
+
+		.loader .face .circle {
+			position: absolute;
+			top: calc(50% - 1px);
+			left: 50%;
+			width: 50%;
+			height: 2px;
+			transform-origin: left;
+		}
+
+		.loader .face.face1 .circle {
+			transform: rotate(-45deg);
+		}
+
+		.loader .face.face2 .circle {
+			transform: rotate(-45deg);
+		}
+
+		.loader .face .circle:before {
+			content: "";
+			position: absolute;
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			background-color: #fff;
+			top: -4px;
+			right: -6px;
+		}
+
+		.loader .face.face1 .circle:before {
+			background: #ffff00;
+			box-shadow: 0 0 20px #ff0, 0 0 40px #ff0, 0 0 60px #ff0, 0 0 80px #ff0,
+				0 0 100px #ff0, 0 0 0 5px rgba(255, 255, 0, .1);
+		}
+
+		.loader .face.face2 .circle:before {
+			background: #03a9f4;
+			box-shadow: 0 0 20px #03a9f4, 0 0 40px #03a9f4, 0 0 60px #03a9f4, 0 0 80px #03a9f4,
+				0 0 100px #03a9f4, 0 0 0 5px rgba(3, 169, 244, .1);
+		}
+
+		@keyframes ani1 {
+			0% {
+				transform: rotate(0deg);
+			}
+
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+
+		@keyframes ani2 {
+			0% {
+				transform: rotate(0deg);
+			}
+
+			100% {
+				transform: rotate(-360deg);
+			}
+		}
+
+		#nadifitlogo {
+			height: 232px;
+			width: 233px;
+			position: relative;
+			left: 342px;
+			top: 231px;
+			z-index: 1;
+			animation: rotation 5s infinite linear;
+		}
+
+		@keyframes rotation {
+			from {
+				transform: rotate(0deg);
+			}
+
+			to {
+				transform: rotate(360deg);
+			}
+		}
+
+
+		.content .animated-text {
+			color: #fff;
+			font-size: 3em;
+			position: absolute;
+			transform: translate(-50%, -50%);
+			text-decoration: none;
+			left: 760px;
+			top: 550px;
+		}
+
+		.content .animated-text:nth-child(1) {
+			color: transparent;
+			-webkit-text-stroke: 2px #ff8500;
+		}
+
+		.content .animated-text:nth-child(2) {
+			color: #1655e0;
+			animation: animate 4s ease-in-out infinite;
+		}
+
+		@keyframes animate {
+
+			0%,
+			100% {
+				clip-path: polygon(0% 45%,
+						16% 44%,
+						33% 50%,
+						54% 60%,
+						70% 61%,
+						84% 59%,
+						100% 52%,
+						100% 100%,
+						0% 100%);
+			}
+
+			50% {
+				clip-path: polygon(0% 60%,
+						15% 65%,
+						34% 66%,
+						51% 62%,
+						67% 50%,
+						84% 45%,
+						100% 46%,
+						100% 100%,
+						0% 100%);
+			}
+		}
+
+		#nadifitlogowhite {
+			position: relative;
+			height: 100px;
+			width: 306px;
+			left: 605px;
+
+		}
+
+		#transcationlogo {
+			position: relative;
+			height: 35px;
+			width: 35px;
+
+		}
+	</style>
+</head>
+
+<body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+	<div class="sidebar">
+		<div class="logo-details">
+			<!--<i class='bx bxl-c-plus-plus icon'></i>-->
+			<div class="logo_name">Nadiswara</div>
+			<i class='bx bx-menu' id="btn"></i>
+			<img src="" class="nadifitlogo" th:src="@{/images/Nadifit Logo_Trans.png}" alt="nadifitlogo">
+		</div>
+		<ul class="nav-list">
+			<li>
+				<a href="/api/auth/home">
+					<!--<i class='bx bx-grid-alt'></i>-->
+					<img src="" th:src="@{/images/home.png}" alt="home">
+					<span class="links_name">Home</span>
+				</a>
+				<span class="tooltip">Home</span>
+			</li>
+			<br>
+
+			<li>
+				<a href="/api/auth/distributorList" class="sidebar-link">
+					<!--<i class='bx bx-chat'></i>-->
+					<img src="" th:src="@{/images/distributor.png}" alt="distributor">
+					<span class="links_name">Distributor</span>
+				</a>
+				<span class="tooltip">Distributor</span>
+			</li>
+			<br>
+
+			<li>
+				<a href="/api/auth/userList" class="sidebar-link">
+					<!--<i class='bx bx-user'></i>-->
+					<img src="" th:src="@{/images/users_list.png}" alt="userList">
+					<span class="links_name">User</span>
+				</a>
+				<span class="tooltip">User</span>
+			</li>
+			<br>
+
+			<li>
+				<a href="/api/auth/userUsage" class="sidebar-link">
+					<!--<i class='bx bx-pie-chart-alt-2'></i>-->
+					<img src="" th:src="@{/images/user.png}" alt="userUsage">
+					<span class="links_name">User Usage</span>
+				</a>
+				<span class="tooltip">User Usage</span>
+			</li>
+			<br>
+
+			<li>
+				<a href="/api/auth/pulseList" class="sidebar-link">
+					<!--<i class='bx bx-folder'></i>-->
+					<img src="" th:src="@{/images/pulse.png}" alt="pulse">
+					<span class="links_name">Pulse Usage</span>
+				</a>
+				<span class="tooltip">Pulse Usage</span>
+			</li>
+			<br>
+
+			<li>
+				<a href="/api/auth/transcation" class="sidebar-link">
+					<!--<i class='bx bx-folder'></i>-->
+					<img src="" id="transcationlogo" th:src="@{/images/transaction1.png}" alt="transcation">
+					<span class="links_name">Transcation Details</span>
+				</a>
+				<span class="tooltip">Transcation Details</span>
+			</li>
+			<br>
+
+			<li>
+				<a href="/api/auth/blogList" class="sidebar-link">
+					<!--<i class='bx bx-cart-alt'></i>-->
+					<img src="" th:src="@{/images/blog.png}" alt="blogs">
+					<span class="links_name">Blogs</span>
+				</a>
+				<span class="tooltip">Blogs</span>
+			</li>
+			<br>
+
+			<li>
+				<a href="/api/auth/bannerList" class="sidebar-link">
+					<!--<i class='bx bx-heart'></i>-->
+					<img src="" th:src="@{/images/banner.png}" alt="banner">
+					<span class="links_name">Banner</span>
+				</a>
+				<span class="tooltip">Banner</span>
+			</li>
+			<br>
+
+			<li>
+				<a href="/logout">
+					<!--<i class='bx bx-log-out'></i>-->
+					<img src="" th:src="@{/images/logout.png}" alt="logout">
+					<span class="links_name">Logout</span>
+				</a>
+				<span class="tooltip">Logout</span>
+			</li>
+		</ul>
+	</div>
+
+	<div class="main-content">
+
+		<img src="" id="nadifitlogowhite" th:src="@{/images/Nadifit Logo_Name.png}" alt="nadifitlogo">
+
+		<img src="" id="nadifitlogo" th:src="@{/images/Nadifit Logo_Trans.png}" alt="nadifitlogo">
+		<div class="loader">
+			<div class="face face1">
+				<div class="circle"></div>
+			</div>
+			<div class="face face2">
+				<div class="circle"></div>
+			</div>
+		</div>
+		<div class="content">
+			<a href="https://nadifithub.com/" class="animated-text" target="_blank">www.nadifithub.com</a>
+			<a href="https://nadifithub.com/" class="animated-text" target="_blank">www.nadifithub.com</a>
+		</div>
+	</div>
+
+
+
+	<script>
+		//	let sidebar = document.querySelector(".sidebar");
+		//	let closeBtn = document.querySelector("#btn");
+
+		//	closeBtn.addEventListener("click", () => {
+		//		sidebar.classList.toggle("open");
+		//		menuBtnChange();
+		//	});
+
+		// following are the code to change sidebar button(optional)
+		//	function menuBtnChange() {
+		//		if (sidebar.classList.contains("open")) {
+		//			closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
+		//		} else {
+		//			closeBtn.classList.replace("bx-menu-alt-right", "bx-menu");
+		//		}
+		//	}
+
+		var links = document.querySelectorAll('.sidebar-link');
+		for (var i = 0; i < links.length; i++) {
+			links[i].addEventListener('click', function (event) {
+				event.preventDefault();
+
+				var url = this.href;
+
+				// Create an iframe and set its src to the URL
+				var iframe = document.createElement('iframe');
+				iframe.src = url;
+				iframe.frameBorder = 0;
+				iframe.style.overflow = 'hidden';
+				iframe.style.width = '100%';
+				iframe.style.height = '100%';
+
+				// Clear the main content area and append the iframe
+				var mainContent = document.querySelector('.main-content');
+				mainContent.innerHTML = '';
+				mainContent.appendChild(iframe);
+			});
+		}
+
+
+
+
+
+	</script>
+
+</body>
+
+</html>
